@@ -3,6 +3,7 @@ from streamlit_autorefresh import st_autorefresh
 import platform
 
 from src.components.cpu import cpu_block
+from src.components.memory import memory_block
 
 if "cpu_rows" not in st.session_state:
     st.session_state.cpu_rows = []
@@ -27,6 +28,6 @@ with tab1:
     cpu_block()
 
 with tab2:
-    st.header("Memory data")
+    memory_block()
 with tab3:
     st.header("Networks data")
