@@ -5,8 +5,10 @@ import psutil
 import streamlit as st
 
 from src.components.ui.card import card_header, card_body
+from src.constants import UPDATE_TIME_IN_SECS
 
 
+@st.fragment(run_every=UPDATE_TIME_IN_SECS)
 def cpu_block():
     st.header("CPU data")
 
@@ -42,15 +44,20 @@ def cpu_block():
 
     cpu_times = psutil.cpu_times_percent()
     cpu_dict = cpu_times._asdict()
-    cpu_dict["timestamp"] = datetime.datetime.now()
 
+    # Build a new dictionary with only the needed keys
+    needed_keys = ["user", "system", "idle", "nice"]
+    cpu_dict = {k: v for k, v in cpu_dict.items() if k in needed_keys}
+
+    cpu_dict["timestamp"] = datetime.datetime.now()
+    st.write(cpu_dict)
     st.session_state.cpu_rows.append(cpu_dict)
 
-    if len(st.session_state.cpu_rows) > 120:
-        st.session_state.cpu_rows.pop(0)
+    df = pd.DataFrame(st.session_state.cpu_rows).set_index("timestamp")
 
-    df = pd.DataFrame(st.session_state.cpu_rows)
-    df = df.set_index("timestamp")
-    st.dataframe(df, use_container_width=True, height=350)
+    df_plot = df.rename(
+        columns={"user": "User", "system": "System", "idle": "Idle", "nice": "Nice"}
+    )
 
-    st.line_chart(df)
+    st.dataframe(df_plot, use_container_width=True, height=350)
+    st.line_chart(df_plot, x_label="Time", y_label="Load")

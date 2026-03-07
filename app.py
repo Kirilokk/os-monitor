@@ -1,14 +1,15 @@
+from collections import deque
+
 import streamlit as st
-from streamlit_autorefresh import st_autorefresh
 import platform
 
 from src.components.cpu import cpu_block
+from src.components.gpu import gpu_block
 from src.components.memory import memory_block
+from src.components.sensors import censors_block
 
 if "cpu_rows" not in st.session_state:
-    st.session_state.cpu_rows = []
-
-st_autorefresh(interval=1000, key="cpu_refresh")
+    st.session_state.cpu_rows = deque(maxlen=120)
 
 
 st.title("OS Monitor")
@@ -22,12 +23,17 @@ with st.container(border=True):
     Python version: **{platform.python_version()}**""")
 
 
-tab1, tab2, tab3 = st.tabs(["🧠 CPU", "💾 Memory", "🌐 Networks"])
+tab_data = [
+    ("🧠 CPU", cpu_block),
+    ("💾 Memory", memory_block),
+    ("🔍 Censors", censors_block),
+]
 
-with tab1:
-    cpu_block()
+if platform.system() == "Linux":
+    tab_data.insert(1, ("🎮 GPU", gpu_block))
 
-with tab2:
-    memory_block()
-with tab3:
-    st.header("Networks data")
+tab_objects = st.tabs([name for name, _ in tab_data])
+
+for tab, (_, handler) in zip(tab_objects, tab_data):
+    with tab:
+        handler()

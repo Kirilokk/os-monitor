@@ -4,9 +4,10 @@ from matplotlib import pyplot as plt
 
 from src.components.ui.card import card_header, card_body
 from src.components.ui.progress_bar import colored_progress
-from src.constants import BYTES_IN_GB
+from src.constants import BYTES_IN_GB, UPDATE_TIME_IN_SECS
 
 
+@st.fragment(run_every=UPDATE_TIME_IN_SECS)
 def memory_block():
     st.header("Memory data")
 
