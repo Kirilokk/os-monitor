@@ -1,4 +1,10 @@
+import os
+
 import psutil
+
+
+def gpu_available() -> bool:
+    return os.path.exists("/dev/dri")
 
 
 def get_temperature(temps, chip, label=None):
