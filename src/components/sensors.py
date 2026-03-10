@@ -19,14 +19,14 @@ def censors_block():
 
     st.metric("⏱ Uptime", f"{hours:02}:{minutes:02}:{seconds:02}")
 
-    st.write(psutil.sensors_temperatures())
+
     sensor_map = detect_temperature_sensors()
     temps = get_all_temperatures(sensor_map)
 
-    if temps:
-        show_temperatures(temps)
-    else:
+    if all(value is None for value in temps.values()):
         st.info("🌡 Temperature metrics are not available in this environment.")
+    else:
+        show_temperatures(temps)
 
 
     battery = psutil.sensors_battery()
