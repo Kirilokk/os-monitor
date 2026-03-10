@@ -23,6 +23,19 @@ def censors_block():
     sensor_map = detect_temperature_sensors()
     temps = get_all_temperatures(sensor_map)
 
+    if temps:
+        show_temperatures(temps)
+    else:
+        st.info("🌡 Temperature metrics are not available in this environment.")
+
+
+    battery = psutil.sensors_battery()
+    if battery:
+        st.subheader("🔋 Battery")
+        show_battery(battery_data=battery)
+
+
+def show_temperatures(temps):
     with st.container(border=True):
         st.subheader("Temperatures")
         cols = st.columns(2)
@@ -35,9 +48,3 @@ def censors_block():
         cols = st.columns(2)
         cols[0].metric("RAM 🌡️", f"{temps['ram']:.1f} °C")
         cols[1].metric("SSD 🌡️", f"{temps['disk']:.1f} °C")
-
-    st.subheader("🔋 Battery")
-
-    battery = psutil.sensors_battery()
-    if battery:
-        show_battery(battery_data=battery)
