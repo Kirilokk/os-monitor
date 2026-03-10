@@ -50,8 +50,7 @@ def cpu_block():
     cpu_dict = {k: v for k, v in cpu_dict.items() if k in needed_keys}
 
     cpu_dict["timestamp"] = datetime.datetime.now()
-    st.write(cpu_dict)
-    st.session_state.cpu_rows.append(cpu_dict)
+    st.session_state.cpu_rows.append(cpu_dict) 
 
     df = pd.DataFrame(st.session_state.cpu_rows).set_index("timestamp")
 
