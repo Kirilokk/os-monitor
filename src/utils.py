@@ -52,8 +52,13 @@ def detect_temperature_sensors():
 def get_all_temperatures(sensor_map):
     temps = psutil.sensors_temperatures()
 
-    return {
-        name: get_temperature(temps, chip, label) if chip else None
-        for name, (chip, label) in sensor_map.items()
-        if chip
-    }
+    result = {}
+    for name, value in sensor_map.items():
+        if value is None:
+            result[name] = None
+            continue
+
+        chip, label = value
+        result[name] = get_temperature(temps, chip, label)
+
+    return result

@@ -19,7 +19,7 @@ def censors_block():
 
     st.metric("⏱ Uptime", f"{hours:02}:{minutes:02}:{seconds:02}")
 
-    # st.write(psutil.sensors_temperatures())
+    st.write(psutil.sensors_temperatures())
     sensor_map = detect_temperature_sensors()
     temps = get_all_temperatures(sensor_map)
 
