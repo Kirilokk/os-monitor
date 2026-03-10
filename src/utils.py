@@ -62,3 +62,9 @@ def get_all_temperatures(sensor_map):
         result[name] = get_temperature(temps, chip, label)
 
     return result
+
+def get_battery_status():
+    try:
+        return psutil.sensors_battery()
+    except FileNotFoundError:
+        return None

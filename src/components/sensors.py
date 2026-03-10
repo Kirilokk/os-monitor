@@ -4,7 +4,7 @@ import streamlit as st
 
 from src.components.ui.sensors import show_battery
 from src.constants import UPDATE_TIME_IN_SECS
-from src.utils import detect_temperature_sensors, get_all_temperatures
+from src.utils import detect_temperature_sensors, get_all_temperatures, get_battery_status
 
 
 @st.fragment(run_every=UPDATE_TIME_IN_SECS)
@@ -29,10 +29,12 @@ def censors_block():
         show_temperatures(temps)
 
 
-    battery = psutil.sensors_battery()
+    battery = get_battery_status()
     if battery:
         st.subheader("🔋 Battery")
         show_battery(battery_data=battery)
+    else:
+        st.info("🔋 Battery info not available in this environment")
 
 
 def show_temperatures(temps):
