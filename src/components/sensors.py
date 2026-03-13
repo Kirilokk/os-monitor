@@ -1,41 +1,37 @@
-import time
-import psutil
 import streamlit as st
 
+from src.services.system_info import get_sensors_data
 from src.components.ui.sensors import show_battery
 from src.constants import UPDATE_TIME_IN_SECS
-from src.utils import detect_temperature_sensors, get_all_temperatures, get_battery_status
 
 
 @st.fragment(run_every=UPDATE_TIME_IN_SECS)
-def censors_block():
-    st.header("Censors data")
+def sensors_block():
+    st.header("Sensors data")
 
-    uptime = int(time.time() - psutil.boot_time())
+    sensors_data = get_sensors_data()
 
-    hours = uptime // 3600
-    minutes = (uptime % 3600) // 60
-    seconds = uptime % 60
+    hours = sensors_data.boot_time // 3600
+    minutes = (sensors_data.boot_time % 3600) // 60
+    seconds = sensors_data.boot_time % 60
 
     st.metric("⏱ Uptime", f"{hours:02}:{minutes:02}:{seconds:02}")
 
-
-    sensor_map = detect_temperature_sensors()
-    temps = get_all_temperatures(sensor_map)
+    # TODO: test sensors
+    temps = sensors_data.temperatures
 
     if all(value is None for value in temps.values()):
         st.info("🌡 Temperature metrics are not available in this environment.")
     else:
         show_temperatures(temps)
 
-
-    battery = get_battery_status()
-    if battery:
+    if sensors_data.battery:
         st.subheader("🔋 Battery")
-        show_battery(battery_data=battery)
+        show_battery(battery_data=sensors_data.battery)
     else:
         st.info("🔋 Battery info not available in this environment")
 
+    # TODO: check fans
 
 def show_temperatures(temps):
     with st.container(border=True):

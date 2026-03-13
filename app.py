@@ -6,7 +6,7 @@ import platform
 from src.components.cpu import cpu_block
 from src.components.gpu import gpu_block
 from src.components.memory import memory_block
-from src.components.sensors import censors_block
+from src.components.sensors import sensors_block
 
 if "cpu_rows" not in st.session_state:
     st.session_state.cpu_rows = deque(maxlen=120)
@@ -26,7 +26,7 @@ with st.container(border=True):
 tab_data = [
     ("🧠 CPU", cpu_block),
     ("💾 Memory", memory_block),
-    ("🔍 Censors", censors_block),
+    ("🔍 Censors", sensors_block),
 ]
 
 if platform.system() == "Linux":

@@ -1,7 +1,9 @@
 import streamlit as st
 
+from src.structures import BatteryData
 
-def show_battery(battery_data):
+
+def show_battery(battery_data: BatteryData):
 
     if battery_data.power_plugged:
         color = "#16c60c"  # green

@@ -1,7 +1,7 @@
 import streamlit as st
-import pyamdgpuinfo
 import plotly.graph_objects as go
 
+from src.services.system_info import get_gpu_info
 from src.constants import BYTES_IN_GB, UPDATE_TIME_IN_SECS
 from src.utils import gpu_available
 
@@ -16,7 +16,7 @@ def gpu_block():
 @st.fragment(run_every=UPDATE_TIME_IN_SECS)
 def show_gpu_metrics():
 
-    gpu = pyamdgpuinfo.get_gpu(0)
+    gpu = get_gpu_info()
 
     load = int(gpu.query_load() * 100)
     vram_used = gpu.query_vram_usage() / BYTES_IN_GB

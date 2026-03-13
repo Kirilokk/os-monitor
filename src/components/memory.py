@@ -1,7 +1,7 @@
-import psutil
 import streamlit as st
 from matplotlib import pyplot as plt
 
+from src.services.system_info import get_memory_info
 from src.components.ui.card import card_header, card_body
 from src.components.ui.progress_bar import colored_progress
 from src.constants import BYTES_IN_GB, UPDATE_TIME_IN_SECS
@@ -14,10 +14,10 @@ def memory_block():
     col1, col2, col3 = st.columns([1, 1, 1])
     cols_height = 150
 
-    disk = psutil.disk_usage("/")
-    total = disk.total / BYTES_IN_GB
-    used = disk.used / BYTES_IN_GB
-    free = disk.free / BYTES_IN_GB
+    memory_data = get_memory_info()
+    total = memory_data.total_storage_bytes / BYTES_IN_GB
+    used = memory_data.used_storage_bytes / BYTES_IN_GB
+    free = total - used
 
     with col1:
         with st.container(border=True, height=cols_height):
@@ -61,9 +61,10 @@ def memory_block():
 
     st.subheader("RAM in real time")
 
-    ram_memory = psutil.virtual_memory()
+    total_virtual_memory = memory_data.total_virtual_memory_bytes / BYTES_IN_GB
+    used_virtual_memory = memory_data.used_virtual_memory_bytes / BYTES_IN_GB
 
-    colored_progress(percent=ram_memory.percent)
+    colored_progress(percent=(used_virtual_memory / total_virtual_memory) * 100)
     st.write(
-        f"Used: {ram_memory.used / BYTES_IN_GB:.2f} GB / Total: {ram_memory.total / BYTES_IN_GB:.2f} GB"
+        f"Used: {used_virtual_memory:.2f} GB / Total: {total_virtual_memory:.2f} GB"
     )
