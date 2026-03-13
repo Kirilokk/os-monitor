@@ -1,26 +1,26 @@
 import streamlit as st
 import plotly.graph_objects as go
 
+from structures import GPUInfo
 from src.services.system_info import get_gpu_info
 from src.constants import BYTES_IN_GB, UPDATE_TIME_IN_SECS
 from src.utils import gpu_available
 
 
+@st.fragment(run_every=UPDATE_TIME_IN_SECS)
 def gpu_block():
-    if gpu_available():
-        show_gpu_metrics()
+    gpu_data = get_gpu_info()
+    if gpu_available() and gpu_data:
+        show_gpu_metrics(gpu_data)
     else:
         st.info("🖥 GPU metrics are not available in this environment.")
 
 
-@st.fragment(run_every=UPDATE_TIME_IN_SECS)
-def show_gpu_metrics():
+def show_gpu_metrics(gpu: GPUInfo):
 
-    gpu = get_gpu_info()
-
-    load = int(gpu.query_load() * 100)
-    vram_used = gpu.query_vram_usage() / BYTES_IN_GB
-    vram_total = gpu.memory_info["vram_size"] / BYTES_IN_GB
+    load = int(gpu.load * 100)
+    vram_used = gpu.used_virtual_memory_bytes / BYTES_IN_GB
+    vram_total = gpu.total_virtual_memory_bytes / BYTES_IN_GB
     vram_percent = (vram_used / vram_total) * 100
 
     st.markdown(
@@ -52,8 +52,8 @@ def show_gpu_metrics():
         with col1:
             st.metric("GPU Load", f"{load}%")
             st.progress(load / 100)
-            st.metric("Temperature", f"{gpu.query_temperature()} °C")
-            st.metric("Power Usage", f"{gpu.query_power()} W")
+            st.metric("Temperature", f"{gpu.temperature} °C")
+            st.metric("Power Usage", f"{gpu.power_usage_watts} W")
 
         # RIGHT SIDE
         with col2:

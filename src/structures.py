@@ -29,3 +29,13 @@ class SensorsData:
     temperatures: dict
     boot_time: float
     battery: BatteryData | None
+
+
+@dataclass
+class GPUInfo:
+    name: str
+    load: float
+    total_virtual_memory_bytes: int
+    used_virtual_memory_bytes: int
+    temperature: float
+    power_usage_watts: int

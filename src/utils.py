@@ -63,6 +63,7 @@ def get_all_temperatures(sensor_map):
 
     return result
 
+
 def get_battery_status():
     try:
         return psutil.sensors_battery()

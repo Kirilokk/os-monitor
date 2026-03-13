@@ -1,13 +1,14 @@
 import time
 
 import psutil
-from pyamdgpuinfo import GPUInfo, get_gpu
+from pyamdgpuinfo import get_gpu
 from src.utils import (
     detect_temperature_sensors,
     get_all_temperatures,
     get_battery_status,
 )
 from src.structures import CPUInfo, MemoryInfo, BatteryData, SensorsData
+from structures import GPUInfo
 
 
 def get_cpu_info():
@@ -15,13 +16,25 @@ def get_cpu_info():
         physical_count=psutil.cpu_count(logical=False),
         logical_count=psutil.cpu_count(logical=True),
         frequency=psutil.cpu_freq()[0],
-        process_ids=psutil.pids(),
         usage=psutil.cpu_times_percent()._asdict(),
+        process_ids=psutil.pids(),
     )
 
 
-def get_gpu_info() -> GPUInfo:
-    return get_gpu(0)
+def get_gpu_info() -> GPUInfo | None:
+    try:
+        # TODO: handle for 1+ GPUs
+        gpu = get_gpu(0)
+        return GPUInfo(
+            name=gpu.name,
+            load=gpu.query_load(),
+            total_virtual_memory_bytes=gpu.memory_info["vram_size"],
+            used_virtual_memory_bytes=gpu.query_vram_usage(),
+            temperature=gpu.query_temperature(),
+            power_usage_watts=gpu.query_power(),
+        )
+    except RuntimeError:
+        return None
 
 
 def get_memory_info() -> MemoryInfo:

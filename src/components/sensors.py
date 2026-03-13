@@ -33,6 +33,7 @@ def sensors_block():
 
     # TODO: check fans
 
+
 def show_temperatures(temps):
     with st.container(border=True):
         st.subheader("Temperatures")
