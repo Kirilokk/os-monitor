@@ -8,6 +8,26 @@ from src.components.gpu import gpu_block
 from src.components.memory import memory_block
 from src.components.sensors import sensors_block
 
+st.markdown(
+    """
+<style>
+
+.title {
+    font-size: 28px;
+    font-weight: 700;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.metric {
+    font-size: 18px;
+}
+
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
 if "cpu_rows" not in st.session_state:
     st.session_state.cpu_rows = deque(maxlen=120)
 

@@ -1,4 +1,10 @@
 from dataclasses import dataclass
+from enum import StrEnum
+
+
+class GpuType(StrEnum):
+    INTEGRATED = "integrated"
+    DISCRETE = "discrete"
 
 
 @dataclass
@@ -39,3 +45,4 @@ class GPUInfo:
     used_virtual_memory_bytes: int
     temperature: float
     power_usage_watts: int
+    type: GpuType

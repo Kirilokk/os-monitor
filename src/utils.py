@@ -2,6 +2,9 @@ import os
 
 import psutil
 
+from src.constants import BYTES_IN_GB
+from src.structures import GpuType
+
 
 def gpu_available() -> bool:
     return os.path.exists("/dev/dri")
@@ -64,8 +67,25 @@ def get_all_temperatures(sensor_map):
     return result
 
 
+def get_gpu_metrics(gpu):
+    load = int(gpu.load * 100)
+
+    vram_used = gpu.used_virtual_memory_bytes / BYTES_IN_GB
+    vram_total = gpu.total_virtual_memory_bytes / BYTES_IN_GB
+    vram_percent = (vram_used / vram_total) * 100 if vram_total else 0
+
+    return load, vram_used, vram_total, vram_percent
+
+
 def get_battery_status():
     try:
         return psutil.sensors_battery()
     except FileNotFoundError:
         return None
+
+
+def get_gpu_type(vram_bytes: int) -> GpuType:
+    if vram_bytes >= 4 * BYTES_IN_GB:
+        return GpuType.DISCRETE
+    else:
+        return GpuType.INTEGRATED
