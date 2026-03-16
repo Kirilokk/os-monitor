@@ -5,7 +5,7 @@
   <a href="#overview">Overview</a> •
   <a href="#features">Features</a> •
   <a href="#tech-stack">Tech Stack</a> •
-  <a href="#limitations">Limitations</a> •
+  <a href="#limitations">Limitations</a>
 </p>
 
 <table>
@@ -70,8 +70,8 @@ Metrics collection is implemented as reusable services shared between a Streamli
 
 - 🌡 **Hardware sensors**
   - Temperatures
-  - Fan speeds
-  - Other available system sensors
+  - Battery
+  - Boot time
 
 - 🖥 **Interactive dashboard**
   - Built with Streamlit
