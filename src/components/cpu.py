@@ -43,7 +43,7 @@ def cpu_block():
     st.subheader("CPU Load")
 
     # Build a new dictionary with only the needed keys
-    needed_keys = ["user", "system", "idle", "nice"]
+    needed_keys = ["user", "system", "idle"]
     cpu_dict = {k: v for k, v in cpu_data.usage.items() if k in needed_keys}
 
     cpu_dict["timestamp"] = datetime.datetime.now()
@@ -51,9 +51,7 @@ def cpu_block():
 
     df = pd.DataFrame(st.session_state.cpu_rows).set_index("timestamp")
 
-    df_plot = df.rename(
-        columns={"user": "User", "system": "System", "idle": "Idle", "nice": "Nice"}
-    )
+    df_plot = df.rename(columns={"user": "User", "system": "System", "idle": "Idle"})
 
     st.dataframe(df_plot, use_container_width=True, height=350)
     st.line_chart(df_plot, x_label="Time", y_label="Load")

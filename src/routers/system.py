@@ -29,7 +29,6 @@ def cpu_endpoint() -> CPUInfo:
     response_model=list[GPUInfo],
 )
 def gpu_endpoint() -> list[GPUInfo]:
-
     gpu = get_gpu_info()
 
     if gpu is None:
