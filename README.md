@@ -38,22 +38,22 @@ Metrics collection is implemented as reusable services shared between a Streamli
 
 <p align="center">
   <b>Main Dashboard + CPU</b><br><br>
-  <img src="docs/dashboard.png" alt="Main Dashboard" width="800">
+  <img src="docs/dashboard.png" alt="Main Dashboard" width="600">
 </p>
 
 <p align="center">
   <b>GPU Monitoring</b><br><br>
-  <img src="docs/gpu.png" alt="GPU Monitoring" width="800">
+  <img src="docs/gpu.png" alt="GPU Monitoring" width="600">
 </p>
 
 <p align="center">
   <b>Memory Usage</b><br><br>
-  <img src="docs/memory.png" alt="Memory Usage" width="800">
+  <img src="docs/memory.png" alt="Memory Usage" width="600">
 </p>
 
 <p align="center">
   <b>Hardware Sensors</b><br><br>
-  <img src="docs/sensors.png" alt="Sensors" width="800">
+  <img src="docs/sensors.png" alt="Sensors" width="600">
 </p>
 
 
@@ -87,14 +87,14 @@ Metrics collection is implemented as reusable services shared between a Streamli
 
 **Backend & UI**
 
-- 🐍 Python
-- ⚡ FastAPI
-- 🎈 Streamlit
+- Python 
+- Streamlit
+- FastAPI
 
 **System Monitoring**
 
-- 🧠 psutil – CPU, memory, storage metrics
-- 🎮 pyamdgpuinfo – AMD GPU metrics
+- psutil – CPU, memory, storage metrics
+- pyamdgpuinfo – AMD GPU metrics
 
 **Environment**
 
